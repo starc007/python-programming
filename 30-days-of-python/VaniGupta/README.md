@@ -1,11 +1,11 @@
 ### A complete overview of all my codes in 30 days of Python: ### 
-***Total commits merged to far: 165***
+***Total commits merged to far: 182***
 
 A merged commit history can be found at: :man_technologist: :computer:     
 https://docs.google.com/document/d/1NiWsyjsDiLMqJZ0-R8L5sx7z7UsDyL7wdtgmXeyLzWM/edit
 
 #### All the codes are: #### 
-***Total codes completed to far: 99***
+***Total codes completed to far: 100***
 
 **Language:** Python :snake:
 
@@ -25,9 +25,10 @@ https://docs.google.com/document/d/1NiWsyjsDiLMqJZ0-R8L5sx7z7UsDyL7wdtgmXeyLzWM/
   - Oop excercise.py
   - Oop syntax.py
   
-- Other Ciphers: (12)
+- Other Ciphers: (13)
   - Beaufort Cipher.py
   - Atbash Cipher.py
+  - Columnar Transposition Cipher.py
   - Rail Cipher.py (only encryption of RailFence Cipher)
   - Rail fence.py (only decryption of RailFence Cipher)
   - Transposition Cipher.py (only encrypt)
