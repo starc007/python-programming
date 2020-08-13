@@ -263,7 +263,7 @@ def vignere_cipher():
 		enc_text = ""	
 
 		if len(key) > len(txt):
-			key = key[: len(key) - len(txt) - 1]
+			key = key[: len(txt)]
 		elif len(key) < len(txt):
 			key = (key * ((len(txt) // len(key)) + 1))[:len(txt)]
 
@@ -291,7 +291,7 @@ def vignere_cipher():
 		dec_text = ""
 
 		if len(key) > len(txt):
-			key = key[: len(key) - len(txt) - 1]
+			key = key[: len(txt)]
 		elif len(key) < len(txt):
 			key = (key * ((len(txt) // len(key)) + 1))[:len(txt)]
 
@@ -355,7 +355,6 @@ def autokey_cipher():
 			key = (key + txt)[: len(txt)]
 		elif len(key) > len(txt):
 			key = key[: len(txt)]
-		
 		for i in range(len(txt)):
 			if txt[i].isalpha():
 				if txt[i].isupper():
@@ -376,14 +375,10 @@ def autokey_cipher():
 		new_text.delete('1.0', END)
 		txt = text_box.get("1.0", END)
 		key = key_text.get()
-		dec_text = ""
-
-		if len(key) < len(txt):
-			key = (key + txt)[: len(txt)]
-		elif len(key) > len(txt):
-			key = key[: len(txt)]	
+		dec_text = ""	
 
 		for i in range(len(txt)):
+			k = ""
 			if txt[i].isalpha():
 				if txt[i].isupper():
 					v = 'A'
@@ -392,7 +387,9 @@ def autokey_cipher():
 				s = ord(txt[i]) - ord(key[i])
 				if s < 0:
 					s += 26
-				dec_text += chr(s + ord(v))
+				k += chr(s + ord(v))
+				key += k
+				dec_text += k
 			else:
 				dec_text += txt[i]
 		new_text.insert(1.0, dec_text)
@@ -690,6 +687,419 @@ def playfair_cipher():
 
 	localtime()
 
+def atbash_cipher():
+	
+	remove()
+	label.config(text = "Atbash Cipher")
+	label.grid(row = 0, column = 0)
+
+	text_label = Label(main, text = "Enter text: ", font = ('fixedsys', 12, 'bold'))
+	text_label.grid(row = 0, column = 0, padx = 20, pady = 20)
+
+	scroll_text = ttk.Scrollbar(main, orient = VERTICAL)
+	text_box = Text(main, height = 13, width = 40, pady = 10, yscrollcommand = scroll_text.set)
+	text_box.grid(row = 1, column = 0, padx = 10, pady = 10)
+	scroll_text.config(command = text_box.yview)
+	scroll_text.grid(row = 1, column = 1, sticky = 'NS')	
+
+	scroll_text2 = ttk.Scrollbar(main, orient = VERTICAL)
+	new_text = Text(main, height = 13, width = 40, pady = 10, yscrollcommand = scroll_text2.set)
+	new_text.grid(row = 1, column = 2, columnspan = 2)
+	scroll_text2.config(command = new_text.yview)
+	scroll_text2.grid(row = 1, column = 4, sticky = 'NS')
+
+	def convert():
+		converted_text = ""
+		new_text.delete('1.0', END)
+		string = text_box.get("1.0", END)
+		
+		key = {
+		'A' : 'Z', 'B' : 'Y', 'C' : 'X', 'D' : 'W', 'E' : 'V', 'F' : 'U', 'G' : 'T', 'H' : 'S', 'I' : 'R',
+		'J' : 'Q', 'K' : 'P', 'L' : 'O', 'M' : 'N', 'N' : 'M', 'O' : 'L', 'P' : 'K', 'Q' : 'J', 'R' : 'I', 
+		'S' : 'H', 'T' : 'G', 'U' : 'F', 'V' : 'E', 'W' : 'D', 'X' : 'C', 'Y' : 'B', 'Z' : 'A', 'a' : 'z', 
+		'b' : 'y', 'c' : 'x', 'd' : 'w', 'e' : 'v', 'f' : 'u', 'g' : 't', 'h' : 's', 'i' : 'r', 'j' : 'q', 
+		'k' : 'p', 'l' : 'o', 'm' : 'n', 'n' : 'm', 'o' : 'l', 'p' : 'k', 'q' : 'j', 'r' : 'i', 's' : 'h', 
+		't' : 'g', 'u' : 'f', 'v' : 'e', 'w' : 'd', 'x' : 'c', 'y' : 'b', 'z' : 'a'}
+
+		for i in range(len(string)):
+			if string[i] in key:
+				converted_text += key[string[i]]
+			else:
+				converted_text += string[i]
+		new_text.insert(1.0, converted_text)
+
+	enc = Button(main, text = "Encrypt", bd = 10, width = 10, command = convert)
+	enc.grid(row = 0, column = 2, padx = 20, pady = 10)
+
+	dec = Button(main, text = "Decrypt", bd = 10, width = 10, command = convert)
+	dec.grid(row = 0, column = 3, padx = 10, pady = 10)
+
+	localtime()
+
+def vignere_autokey_cipher():
+
+	remove()
+	label.config(text = "Vignere Autokey Cipher")
+	label.grid(row = 0, column = 0)
+
+	text_label = Label(main, text = "Enter text: ", font = ('fixedsys', 12, 'bold'))
+	text_label.grid(row = 0, column = 0, padx = 20, pady = 20)
+
+	scroll_text = ttk.Scrollbar(main, orient = VERTICAL)
+	text_box = Text(main, height = 13, width = 40, pady = 10, yscrollcommand = scroll_text.set)
+	text_box.grid(row = 1, column = 0, padx = 10, pady = 10)
+	scroll_text.config(command = text_box.yview)
+	scroll_text.grid(row = 1, column = 1, sticky = 'NS')
+
+	key_label = Label(main, text = "Enter key: ", font = ('fixedsys', 12, 'bold'))
+	key_label.grid(row = 2, column = 0)
+
+	key_text = Entry(main, width = 40)
+	key_text.grid(row = 3, column = 0, padx = 10, pady = 10)	
+
+	scroll_text2 = ttk.Scrollbar(main, orient = VERTICAL)
+	new_text = Text(main, height = 13, width = 40, pady = 10, yscrollcommand = scroll_text2.set)
+	new_text.grid(row = 1, column = 2, columnspan = 2)
+	scroll_text2.config(command = new_text.yview)
+	scroll_text2.grid(row = 1, column = 4, sticky = 'NS')
+
+	def encrypt():
+
+		new_text.delete('1.0', END)
+		txt = text_box.get("1.0", END)
+		key = key_text.get()
+		enc_text = ""	
+
+		if len(key) > len(txt):
+			key = key[: len(txt)]
+		elif len(key) < len(txt):
+			key += txt[:len(key)]
+		for i in range(len(txt)):
+			if txt[i].isupper(): 
+				v = 'A'
+			elif txt[i].islower(): 
+				v = 'a'
+			else:
+				enc_text += txt[i]
+				continue
+
+			enc_text += (chr(((ord(txt[i]) - 2 * ord(v) + ord(key[i])) % 26) + ord(v)))
+
+		new_text.insert(1.0, enc_text)
+
+	enc = Button(main, text = "Encrypt", bd = 10, width = 10, command = encrypt)
+	enc.grid(row = 0, column = 2, padx = 20, pady = 10)
+
+	def decrypt():
+	
+		new_text.delete('1.0', END)
+		txt = text_box.get("1.0", END)
+		key = key_text.get()
+		dec_text = ""
+
+		for i in range(len(txt)):
+			if txt[i].isupper(): 
+				v = 'A'
+			elif txt[i].islower(): 
+				v = 'a'
+			else:
+				dec_text += txt[i]
+				continue
+
+			s = ord(txt[i]) - ord(key[i])
+			if s < 0: 
+				s += 26
+			v_k = chr(s + ord(v))
+			key += v_k
+			dec_text += v_k
+		
+		new_text.insert(1.0, dec_text)
+
+	dec = Button(main, text = "Decrypt", bd = 10, width = 10, command = decrypt)
+	dec.grid(row = 0, column = 3, padx = 10, pady = 10)	
+
+	localtime()
+
+def beaufort_cipher():
+
+	remove()
+	label.config(text = "Beaufort Cipher")
+	label.grid(row = 0, column = 0)
+
+	text_label = Label(main, text = "Enter text: ", font = ('fixedsys', 12, 'bold'))
+	text_label.grid(row = 0, column = 0, padx = 20, pady = 20)
+
+	scroll_text = ttk.Scrollbar(main, orient = VERTICAL)
+	text_box = Text(main, height = 13, width = 40, pady = 10, yscrollcommand = scroll_text.set)
+	text_box.grid(row = 1, column = 0, padx = 10, pady = 10)
+	scroll_text.config(command = text_box.yview)
+	scroll_text.grid(row = 1, column = 1, sticky = 'NS')
+
+	key_label = Label(main, text = "Enter key: ", font = ('fixedsys', 12, 'bold'))
+	key_label.grid(row = 2, column = 0)
+
+	key_text = Entry(main, width = 40)
+	key_text.grid(row = 3, column = 0, padx = 10, pady = 10)	
+
+	scroll_text2 = ttk.Scrollbar(main, orient = VERTICAL)
+	new_text = Text(main, height = 13, width = 40, pady = 10, yscrollcommand = scroll_text2.set)
+	new_text.grid(row = 1, column = 2, columnspan = 2)
+	scroll_text2.config(command = new_text.yview)
+	scroll_text2.grid(row = 1, column = 4, sticky = 'NS')
+
+	def convert():
+	
+		new_text.delete('1.0', END)
+		txt = text_box.get("1.0", END)
+		key = key_text.get()
+		converted_text = ""
+
+		if len(key) > len(txt):
+			key = key[: len(txt)]
+		elif len(key) < len(txt):
+			key = (key * ((len(txt) // len(key)) + 1))[:len(txt)]
+
+		# print("beaifort key", key)
+
+		for i in range(len(txt)):
+			if txt[i].isupper(): 
+				v = 'A'
+			elif txt[i].islower(): 
+				v = 'a'
+			else:
+				converted_text += txt[i]
+				continue
+
+			s = ord(key[i]) - ord(txt[i])
+			if s < 0: 
+				s += 26
+
+			converted_text += chr(s + ord(v))
+		
+		new_text.insert(1.0, converted_text)
+
+	enc = Button(main, text = "Encrypt", bd = 10, width = 10, command = convert)
+	enc.grid(row = 0, column = 2, padx = 20, pady = 10)
+
+	dec = Button(main, text = "Decrypt", bd = 10, width = 10, command = convert)
+	dec.grid(row = 0, column = 3, padx = 10, pady = 10)	
+
+	localtime()
+
+def beaufort_autokey_cipher():
+
+	remove()
+	label.config(text = "Beaufort Autokey Cipher")
+	label.grid(row = 0, column = 0)
+
+	text_label = Label(main, text = "Enter text: ", font = ('fixedsys', 12, 'bold'))
+	text_label.grid(row = 0, column = 0, padx = 20, pady = 20)
+
+	scroll_text = ttk.Scrollbar(main, orient = VERTICAL)
+	text_box = Text(main, height = 13, width = 40, pady = 10, yscrollcommand = scroll_text.set)
+	text_box.grid(row = 1, column = 0, padx = 10, pady = 10)
+	scroll_text.config(command = text_box.yview)
+	scroll_text.grid(row = 1, column = 1, sticky = 'NS')
+
+	key_label = Label(main, text = "Enter key: ", font = ('fixedsys', 12, 'bold'))
+	key_label.grid(row = 2, column = 0)
+
+	key_text = Entry(main, width = 40)
+	key_text.grid(row = 3, column = 0, padx = 10, pady = 10)	
+
+	scroll_text2 = ttk.Scrollbar(main, orient = VERTICAL)
+	new_text = Text(main, height = 13, width = 40, pady = 10, yscrollcommand = scroll_text2.set)
+	new_text.grid(row = 1, column = 2, columnspan = 2)
+	scroll_text2.config(command = new_text.yview)
+	scroll_text2.grid(row = 1, column = 4, sticky = 'NS')
+
+	def encrypt():
+	
+		new_text.delete('1.0', END)
+		txt = text_box.get("1.0", END)
+		key = key_text.get()
+		converted_text = ""
+
+		if len(key) > len(txt):
+			key = key[: len(txt)]
+		elif len(key) < len(txt):
+			key += txt[:len(key)]
+		# print("b_autokey", key)
+		for i in range(len(txt)):
+			if txt[i].isupper(): 
+				v = 'A'
+			elif txt[i].islower(): 
+				v = 'a'
+			else:
+				converted_text += txt[i]
+				continue
+
+			s = ord(key[i]) - ord(txt[i])
+			if s < 0: 
+				s += 26
+
+			converted_text += chr(s + ord(v))
+		
+		new_text.insert(1.0, converted_text)
+
+	def decrypt():
+	
+		new_text.delete('1.0', END)
+		txt = text_box.get("1.0", END)
+		key = key_text.get()
+		converted_text = ""
+
+		for i in range(len(txt)):
+			b_k = ""
+			if txt[i].isupper(): 
+				v = 'A'
+			elif txt[i].islower(): 
+				v = 'a'
+			else:
+				converted_text += txt[i]
+				continue
+
+			s = ord(key[i]) - ord(txt[i])
+			if s < 0: 
+				s += 26
+			b_k = chr(s + ord(v))
+			key += b_k
+			converted_text += b_k
+		
+		new_text.insert(1.0, converted_text)
+
+	enc = Button(main, text = "Encrypt", bd = 10, width = 10, command = encrypt)
+	enc.grid(row = 0, column = 2, padx = 20, pady = 10)
+
+	dec = Button(main, text = "Decrypt", bd = 10, width = 10, command = decrypt)
+	dec.grid(row = 0, column = 3, padx = 10, pady = 10)	
+
+	localtime()
+
+def columnar_trans_cipher():
+	remove()
+
+	label.config(text = "Columnar Transposition Cipher")
+	label.grid(row = 0, column = 0)
+
+	text_label = Label(main, text = "Enter text: ", font = ('fixedsys', 12, 'bold'))
+	text_label.grid(row = 0, column = 0, padx = 20, pady = 20)
+
+	scroll_text = ttk.Scrollbar(main, orient = VERTICAL)
+	text_box = Text(main, height = 13, width = 40, pady = 10, yscrollcommand = scroll_text.set)
+	text_box.grid(row = 1, column = 0, padx = 10, pady = 10)
+	scroll_text.config(command = text_box.yview)
+	scroll_text.grid(row = 1, column = 1, sticky = 'NS')
+
+	key_label = Label(main, text = "Enter key: ", font = ('fixedsys', 12, 'bold'))
+	key_label.grid(row = 2, column = 0)
+
+	key_text = Entry(main, width = 40)
+	key_text.grid(row = 3, column = 0, padx = 10, pady = 10)	
+
+	scroll_text2 = ttk.Scrollbar(main, orient = VERTICAL)
+	new_text = Text(main, height = 13, width = 40, pady = 10, yscrollcommand = scroll_text2.set)
+	new_text.grid(row = 1, column = 2, columnspan = 2)
+	scroll_text2.config(command = new_text.yview)
+	scroll_text2.grid(row = 1, column = 4, sticky = 'NS')
+
+	def encrypt():
+
+		new_text.delete('1.0', END)
+		txt = text_box.get("1.0", END)
+		key = key_text.get().lower()
+		enc_text = ""
+		s = ""
+
+		# to make sure elements in key are unique
+		for i in key:
+			if i not in s: s+= i
+
+		key = s
+		l = [i for i in key]
+		key2 = sorted(list(l))
+
+		if len(key) > len(txt):
+		    key = key[:len(txt)]
+
+		cols = len(key2)
+
+		# ceil function without using math library
+		rows = -(-len(txt)//cols)
+		enc_text = ""
+
+		matrix = [[None for c in range(cols)] for r in range(rows)]
+
+		index = 0
+		for r in range(rows):
+			for c in range(cols):
+				if index < len(txt):
+					matrix[r][c] = txt[index]
+					index += 1
+
+		for i in key2:
+			x = key.index(i)
+			enc_text += "".join([row[x] for row in matrix if row[x] is not None])
+		
+		new_text.insert(1.0, enc_text)
+
+	enc = Button(main, text = "Encrypt", bd = 10, width = 10, command = encrypt)
+	enc.grid(row = 0, column = 2, padx = 20, pady = 10)
+
+	def decrypt():
+
+		new_text.delete('1.0', END)
+		txt = text_box.get("1.0", END)
+		key = key_text.get().lower()
+		enc_text = ""
+		s = ""
+
+		for i in key:
+			if i not in s: s+= i
+
+		key = s
+		l = [i for i in key]
+		key2 = sorted(list(l))
+
+		if len(key) > len(txt):
+		    key = key[:len(txt)]
+
+		cols = len(key2)
+		rows = -(-len(txt)//cols)
+		dec_text = ""
+		end = len(txt) % len(key2)
+
+		matrix = [[" " for c in range(cols)] for r in range(rows)]
+		diff = len(key) - (len(txt) % len(key))
+		if diff == len(key):
+			diff = 0
+
+		cl = -1
+		while diff != 0:
+			matrix[-1][cl] = None
+			diff -= 1
+			cl -= 1
+
+		indx = 0
+		for i in key2:
+			x = key.index(i)
+			for r in range(rows):
+				if matrix[r][x] is not None and indx < len(txt):
+					matrix[r][x] = txt[indx]
+					indx += 1
+
+		for r in range(rows):
+			for c in range(cols):
+				if matrix[r][c] is not None:
+					dec_text += matrix[r][c]
+		new_text.insert(1.0, dec_text)
+
+	dec = Button(main, text = "Decrypt", bd = 10, width = 10, command = decrypt)
+	dec.grid(row = 0, column = 3, padx = 10, pady = 10)	
+
+	localtime()
+
+
 # ----------------- Home Screen -------------------#
 
 show()
@@ -717,14 +1127,25 @@ railfence.grid(row = 5, column = 0)
 playfair = Button(frame, padx = 20, bd = 10, text = 'Playfair Cipher', width = 20, height = 3, command = playfair_cipher)
 playfair.grid(row = 6, column = 0)
 
-C4 = Button(frame, padx = 20, bd = 10, text = 'Cipher', width = 20, height = 3)
-C4.grid(row = 7, column = 0)
+atbash = Button(frame, padx = 20, bd = 10, text = 'Atbash Cipher', width = 20, height = 3, command = atbash_cipher)
+atbash.grid(row = 7, column = 0)
 
-C5 = Button(frame, padx = 20, bd = 10, text = 'Cipher', width = 20, height = 3)
-C5.grid(row = 8, column = 0)
+vignere_autokey = Button(frame, padx = 20, bd = 10, text = 'Vignere Autokey Cipher', width = 20, height = 3, command = vignere_autokey_cipher)
+vignere_autokey.grid(row = 8, column = 0)
 
-C6 = Button(frame, padx = 20, bd = 10, text = 'Cipher', width = 20, height = 3)
-C6.grid(row = 9, column = 0)
+beaufort = Button(frame, padx = 20, bd = 10, text = 'Beaufort Cipher', width = 20, height = 3, command = beaufort_cipher)
+beaufort.grid(row = 9, column = 0)
 
+beaufort_autokey = Button(frame, padx = 20, bd = 10, text = 'Beaufort Autokey Cipher', width = 20, height = 3, command = beaufort_autokey_cipher)
+beaufort_autokey.grid(row = 10, column = 0)
+
+columnar = Button(frame, padx = 20, bd = 10, text = 'Columnar Transposition Cipher', width = 20, height = 3, command = columnar_trans_cipher)
+columnar.grid(row = 11, column = 0)
+
+C3 = Button(frame, padx = 20, bd = 10, text = 'Cipher', width = 20, height = 3)
+C3.grid(row = 12, column = 0)
+
+C1 = Button(frame, padx = 20, bd = 10, text = 'Cipher', width = 20, height = 3)
+C1.grid(row = 13, column = 0)
 
 root.mainloop()
