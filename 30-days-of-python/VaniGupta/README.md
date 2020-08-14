@@ -5,7 +5,7 @@ A merged commit history can be found at: :man_technologist: :computer:
 https://docs.google.com/document/d/1NiWsyjsDiLMqJZ0-R8L5sx7z7UsDyL7wdtgmXeyLzWM/edit
 
 #### All the codes are: #### 
-***Total codes completed to far: 100***
+***Total codes completed to far: 101***
 
 **Language:** Python :snake:
 
@@ -40,8 +40,9 @@ https://docs.google.com/document/d/1NiWsyjsDiLMqJZ0-R8L5sx7z7UsDyL7wdtgmXeyLzWM/
   - Autokey Cipher.py
   - Playfair Cipher.py
   
-- Other Python practise codes: (39)
+- Other Python practise codes: (40)
   - Parse Address.py
+  - Flatten 2D List.py
   - NLP Calculator.py
   - Sentiment Analysis.py
   - Outbreaks.py
